@@ -35,7 +35,7 @@ const Header = ({ withSearch }: HeaderProps) => {
   return (
     <div className="mx-auto flex max-w-[1224px] items-center justify-between max-xl:px-5 max-lg:w-full max-lg:pt-6 min-[1024px]:h-20">
       <Link href={"/"} className="relative h-[30px] w-[100px]">
-        <Image src="/Logo.png" alt="Fsw Food" fill quality={100} />
+        <Image src="/fsw-logo.png" alt="Fsw Food" fill quality={100} />
       </Link>
 
       {withSearch && (
