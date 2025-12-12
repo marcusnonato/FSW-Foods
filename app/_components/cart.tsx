@@ -40,7 +40,7 @@ const Cart = ({ setIsOpen }: CartProps) => {
     try {
       setIsSubmitting(true);
 
-      await createOrder({
+      const order = await createOrder({
         subtotalPrice,
         totalPrice,
         totalDiscounts,
@@ -49,7 +49,7 @@ const Cart = ({ setIsOpen }: CartProps) => {
         restaurant: {
           connect: { id: restaurant.id },
         },
-        status: OrderStatus.CONFIRMED,
+        status: OrderStatus.PENDING,
         user: {
           connect: { id: data.user.id },
         },
@@ -62,6 +62,27 @@ const Cart = ({ setIsOpen }: CartProps) => {
           },
         },
       });
+
+      const stripeCheckout = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: order,
+          items: products.map((product) => ({
+            name: product.name,
+            description: product.description,
+            imageUrl: product.imageUrl,
+            price: product.price,
+            quantity: product.quantity,
+          })),
+        }),
+      });
+
+      const { url } = await stripeCheckout.json();
+
+      router.push(url);
 
       clearCart();
       setIsOpen(false);

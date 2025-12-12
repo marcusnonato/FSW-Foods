@@ -28,6 +28,8 @@ interface OrderItemProps {
 
 const getOrderStatusLabel = (status: OrderStatus) => {
   switch (status) {
+    case "PENDING":
+      return "Aguardando pagamento";
     case "CONFIRMED":
       return "Confirmado";
     case "PREPARING":
